@@ -54,7 +54,7 @@ const PaymentStack = () => {
 const App = () => {
   useEffect(async()=>{
     const getData=()=>{
-        
+        console.log("hiiiii");
     }
 
    
