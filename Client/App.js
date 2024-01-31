@@ -55,7 +55,7 @@ const App = () => {
   useEffect(async()=>{
     const getData=()=>{
         console.log("hiiiii byeeeeeee");
-        console.log("why checkkkkggg");
+        console.log("why checkkkkggg mainnn");
     }
 
    
