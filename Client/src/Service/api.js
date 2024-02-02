@@ -20,3 +20,13 @@ export const authenticatelogin= async(data)=>{
         return error.response;
     }
 }
+
+export const getData=async(token)=>{
+    console.log("tokennn",token);
+    try {
+        return await axios.post(`${URL}/userdata`,{token:token})
+    } catch (error) {
+        console.log("error in getting data through token",error);
+        return error.response;
+    }
+}

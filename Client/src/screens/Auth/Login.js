@@ -24,25 +24,26 @@ const Login = ({ navigation }) => {
   const handleLogin = async(values) => {
     console.log('Logging in with:', values);
     let response = await authenticatelogin(values);
-       console.log("responsee------",response);
-       if(response.status != 200){
+       console.log("responsee------",response.data);
+       if(response.status != 201){
         // console.log("responsenottt",response);
         Alert.alert("Error while login please try again")
        }
        else{
+        dispatch(name(values.email))
         try {
-          const data=true
+          const data=response.data.data;
           await AsyncStorage.setItem(
-            'USER',
+            'token',
             JSON.stringify(data),
           );
         } catch (error) {
           console.log("error in asynchstorageeee",error);
         }
-         navigation.navigate('HomeTabs');
+        //  navigation.navigate('HomeTabs');
 
        }
-       dispatch(name(values.email))
+       
   };
 
   const handleSignUp = () => {

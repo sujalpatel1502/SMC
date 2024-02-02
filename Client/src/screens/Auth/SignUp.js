@@ -30,9 +30,11 @@ const SignUp = ({ navigation }) =>{
         Alert.alert("Error while signup please try again")
        }
        else{
-         navigation.navigate('HomeTabs');
+        //  navigation.navigate('HomeTabs');
+        Alert.alert("Sucessfully created account please log in")
+        navigation.navigate('Login');
        }
-       dispatch(name(values.name))
+      //  dispatch(name(values.name))
 
   };
 

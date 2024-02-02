@@ -1,7 +1,10 @@
-import React, { useRef, useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useEffect, useRef, useState } from 'react';
 import { View, Text, Image, TouchableOpacity, ScrollView, StyleSheet, Dimensions, FlatList } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { getData } from '../../Service/api';
+import { name } from '../../redux/action';
 
 const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
@@ -30,8 +33,39 @@ const NoticeCard = ({ title, text, imageSource }) => {
 
 const Home = ({ navigation }) => {
     const [activeIndex, setActiveIndex] = useState(0);
-    const flatListRef = useRef(null);
+    const [allowUser, setAllowUser] = useState(null)
     const userName = useSelector(state=>state.dataReducer)
+    console.log("usernameee",userName);
+    const dispatch = useDispatch();
+    const flatListRef = useRef(null);
+    // const userName = useSelector(state=>state.dataReducer)
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const storedData = await AsyncStorage.getItem('token');
+                const parsedData = JSON.parse(storedData);
+                setAllowUser(parsedData);
+                // console.log("asyncccccdataaaaaaaa",parsedData);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        fetchData();
+    }, []);
+    useEffect(()=>{
+        const fetchToken=async()=>{
+
+            let response = await getData(allowUser);
+            console.log("responsee------ of user dataaaa",response.data);
+            dispatch(name(response?.data?.data))
+            
+        }
+        
+
+
+        fetchToken()
+    },[allowUser])
     const noticeData = [
         {
             title: 'NOTICE 1',
@@ -72,7 +106,7 @@ const Home = ({ navigation }) => {
                     <View style={styles.userInfo}>
                         <Image source={require('../../assets/userImage.png')} style={styles.userImage} />
                         <View>
-                            <Text style={styles.userName}>Hi {userName?.name}</Text>
+                            <Text style={styles.userName}>Hi {userName?.userData?.name}</Text>
                             <Text style={styles.userDetails}>A - 420 | Sky Society</Text>
                         </View>
                     </View>
