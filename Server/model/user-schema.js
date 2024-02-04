@@ -17,6 +17,24 @@ const userSchema=new mongoose.Schema({
         type:String,
         required:true
     },
+    phoneNumber:{
+        type:Number,
+        trim:true,
+        unique:true,
+        
+        
+    },
+    Wing:{
+        type:String,
+        trim:true,
+        lowercase:true
+    },
+    flatNumber:{
+        type:Number,
+        trim:true,
+        unique:true,
+    }
+
    
 });
 

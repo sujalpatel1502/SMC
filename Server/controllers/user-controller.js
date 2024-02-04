@@ -3,25 +3,66 @@ import User from "../model/user-schema.js";
 import Jwt  from "jsonwebtoken";
 // import Product from "../model/product.js";
 const JWT_SECRET="ndfvgtdyurhdvfgtioylgkevchopfitnjrhfnjhsawiuhggyy";
-
- export const usersignup= async(request,response)=>{
-    console.log("req",request.body);
-    try {
-        const exists=await User.findOne({email:request.body.email});
-        if(exists){
-            return response.status(401).json({message:'username already exist'})
+    // const updateUser=async(email,newDeatils)=>{
+    //         User.updateOne({email:email},{$set:newDeatils},(err,result)=>{
+    //             if(err){
+    //                 // return response.status(401).json({message:'Something went wrong'})
+    //                 return err
+    //             }
+    //             else{
+    //                 // return response.status(200).json({message:'sucessfully doneeeee'})
+    //                 return result
+    //             }
+    //         })
+    // }
+    const updateUser = async (email, newDetails) => {
+        try {
+            const result = await User.updateOne({ email: email }, { $set: newDetails });
+            const data=await User.findOne({email:email});
+            // console.log("resulttttttt",data);
+            return data;
+        } catch (error) {
+            return error;
         }
-
-        const user=request.body;
-        console.log(user);
-        const newUser= new User(user);
-       await newUser.save();
-       response.status(200).json({message:user})
-    } catch (error) {
-        console.log("errorrrrrrrrrrrrrrrrrrr whil signup",error);
-       response.status(500).json({message:error.message})
-
+    };
+ export const usersignup= async(request,response)=>{
+    // console.log("req",request.body);
+    if(request.query.id){
+        console.log("req queryyyy",request.query.id);
+        console.log("req bodyy",request.body);
+        const exist=await User.findOne({_id:request.query.id})
+        if(exist){
+            try {
+                const ress = await updateUser(exist.email, request.body);
+                console.log("res of update user", ress);
+                return response.status(200).json({message:ress})
+            } catch (error) {
+                console.log("Error updating user:", error);
+                response.status(500).json({ message: error.message });
+            }
+        }
+        console.log("reqqqqqqqqqqqujdj",exist);
     }
+    else{
+        try {
+            const exists=await User.findOne({email:request.body.email});
+            if(exists){
+                return response.status(401).json({message:'username already exist'})
+            }
+    
+            const user=request.body;
+            console.log(user);
+            const newUser= new User(user);
+           await newUser.save();
+           response.status(200).json({message:user})
+        } catch (error) {
+            console.log("errorrrrrrrrrrrrrrrrrrr whil signup",error);
+           response.status(500).json({message:error.message})
+    
+        }
+    }
+    
+  
 }
 export const userlogin= async(request,response)=>{
     try {
