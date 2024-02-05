@@ -1,6 +1,7 @@
 
 import User from "../model/user-schema.js";
 import Jwt  from "jsonwebtoken";
+import bcrypt from 'bcrypt'
 // import Product from "../model/product.js";
 const JWT_SECRET="ndfvgtdyurhdvfgtioylgkevchopfitnjrhfnjhsawiuhggyy";
     // const updateUser=async(email,newDeatils)=>{
@@ -49,10 +50,16 @@ const JWT_SECRET="ndfvgtdyurhdvfgtioylgkevchopfitnjrhfnjhsawiuhggyy";
             if(exists){
                 return response.status(401).json({message:'username already exist'})
             }
-    
+            const {email,password,name}=request.body;
+            const hashpassword=await bcrypt.hash(password,10);
             const user=request.body;
             console.log(user);
-            const newUser= new User(user);
+            // const newUser= new User(user);
+            const newUser=new User({
+                name,
+                email,
+                password:hashpassword
+            })
            await newUser.save();
            response.status(200).json({message:user})
         } catch (error) {
@@ -68,7 +75,18 @@ export const userlogin= async(request,response)=>{
     try {
         const email=request.body.email;
         const password=request.body.password;
-       let user= await User.findOne({email:email,password:password})
+        let existingUser;
+    try {
+        existingUser=await User.findOne({email})
+    } catch (error) {
+       return console.log(error);
+    }
+        const ispassword=await bcrypt.compare(password,existingUser.password);
+        console.log("ispassword",ispassword);
+        if(!ispassword){
+             return response.status(401).json({message:"incorrect password"});
+        }
+       let user= await User.findOne({email:email})
        if(user){
         // return response.status(200).json(`${email} login sucessfull`)
         const token=Jwt.sign({email:email},JWT_SECRET);
