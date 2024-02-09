@@ -1,4 +1,3 @@
-
 import User from "../model/user-schema.js";
 import Jwt  from "jsonwebtoken";
 import bcrypt from 'bcrypt'
@@ -50,26 +49,27 @@ const JWT_SECRET="ndfvgtdyurhdvfgtioylgkevchopfitnjrhfnjhsawiuhggyy";
             if(exists){
                 return response.status(401).json({message:'username already exist'})
             }
-            const {email,password,name}=request.body;
+            const {email,password,name,phoneNumber,wing,flatNumber}=request.body;
             const hashpassword=await bcrypt.hash(password,10);
             const user=request.body;
             console.log(user);
             // const newUser= new User(user);
+            console.log("wingggg",wing);
             const newUser=new User({
                 name,
                 email,
-                password:hashpassword
+                password:hashpassword,
+                phoneNumber,
+                wing,
+                flatNumber
             })
            await newUser.save();
            response.status(200).json({message:user})
         } catch (error) {
             console.log("errorrrrrrrrrrrrrrrrrrr whil signup",error);
            response.status(500).json({message:error.message})
-    
         }
     }
-    
-  
 }
 export const userlogin= async(request,response)=>{
     try {
@@ -101,19 +101,14 @@ export const userlogin= async(request,response)=>{
     } catch (error) {
         console.log("errorrrrrrrrrrrrrrrrrrr whil login",error);
        response.status(500).json({message:error.message})
-
     }
     console.log("hiiii");
 }
-
-
-
 export const userdata=async(request,response)=>{
     const {token}=request.body;
     try {
         const user=Jwt.verify(token,JWT_SECRET)
         const useremail=user.email;
-
         User.findOne({email:useremail}).then((data)=>{
             return response.send({status:"ok",data:data})
         })
@@ -121,8 +116,3 @@ export const userdata=async(request,response)=>{
         return response.send({error:error})
     }
 }
-
-
-
-
-

@@ -24,7 +24,7 @@ const userSchema=new mongoose.Schema({
         
         
     },
-    Wing:{
+    wing:{
         type:String,
         trim:true,
         lowercase:true

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const URL='https://1145-2405-201-201c-8115-1cd6-aa5c-a3e2-e77e.ngrok-free.app'
+const URL='https://f55a-2405-201-201c-8115-4c79-1940-f6b3-cba.ngrok-free.app'
 
 export const authenticatesignup= async(data)=>{
     console.log("dataaa",data);

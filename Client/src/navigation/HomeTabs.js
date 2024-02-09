@@ -2,8 +2,8 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import ProfileStack from './ProfileStack';
 import Home from '../screens/HomeScreen/Home';
+import ProfileScreen from '../screens/ProfileScreen/ProfileScreen';
 
 
 
@@ -40,7 +40,7 @@ const HomeTabs = () => {
           </Stack.Navigator>
         )}
       </Tab.Screen>
-      <Tab.Screen options={{ headerShown: false }} name="Profile" component={ProfileStack} />
+      <Tab.Screen options={{ headerShown: false }} name="Profile" component={ProfileScreen} />
     </Tab.Navigator>
   );
 };

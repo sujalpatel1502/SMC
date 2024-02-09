@@ -16,6 +16,8 @@ import HomeTabs from './HomeTabs';
 import { useDispatch, useSelector } from 'react-redux';
 import { getData } from '../Service/api';
 import { name } from '../redux/action';
+import DrawerNavigation from './DrawerNavigation';
+import SplashScreenHome from '../screens/Splash/SplashScreenHome';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -86,7 +88,7 @@ const NavigationHandler = () => {
 
     //     fetchToken()
     // },[allowUser])
-    console.log("USerrrrrrrrr", allowUser,userName?.name);
+    // console.log("USerrrrrrrrr", allowUser,userName?.userData?.name);
     return (
         <NavigationContainer>
             <Stack.Navigator initialRouteName='Splash' headerMode="none">
@@ -96,7 +98,8 @@ const NavigationHandler = () => {
                     userName?.userData !== null || allowUser !== null?
                         <>
                             {/* <Stack.Screen options={{ headerShown: false }} name="Splash" component={SplashScreen} /> */}
-                            <Stack.Screen options={{ headerShown: false }} name="HomeTabs" component={HomeTabs} />
+                            <Stack.Screen options={{ headerShown: false }} name="Splashh" component={SplashScreenHome} />
+                            <Stack.Screen options={{ headerShown: false }} name="DrawerNavigation" component={DrawerNavigation} />
                             <Stack.Screen options={{ headerShown: false }} name="MembersStack" component={MembersStack} />
                             <Stack.Screen options={{ headerShown: false }} name="VisitorStack" component={VisitorStack} />
                             <Stack.Screen options={{ headerShown: false }} name="NoticeStack" component={NoticeStack} />
